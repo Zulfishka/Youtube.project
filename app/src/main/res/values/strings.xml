@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Youtube.project</string>
+    <string name="tv_back" />
+    <string name="tv_playlist" />
+    <string name="tv_title" />
+    <string name="tv_description" />
+    <string name="tv_number_of_videos" />
 </resources>
