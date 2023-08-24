@@ -8,7 +8,7 @@ import coil.load
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.ItemPlaylistBinding
 
-class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlayListViewHolder>() {
+class PlaylistAdapter(val onClick:(Playlist.Item)->Unit) : RecyclerView.Adapter<PlaylistAdapter.PlayListViewHolder>() {
 
     var list = mutableListOf<Playlist.Item>()
 
@@ -46,6 +46,9 @@ class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlayListViewHolder>
             binding.ivPlaylistImage.load(item.snippet.thumbnails.default.url)
             binding.namePlaylist.text = item.snippet.title
             binding.tvAmountVideo.text = item.contentDetails.itemCount.toString() + " video series"
+            itemView.setOnClickListener {
+                onClick(item)
+            }
         }
     }
 }

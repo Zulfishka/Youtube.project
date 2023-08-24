@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseActivity <VB : ViewBinding, VM : BaseViewModel> : AppCompatActivity () {
+abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel> : AppCompatActivity() {
 
     protected lateinit var binding: VB
     protected abstract fun inflateViewBinding(): VB
@@ -16,19 +16,19 @@ abstract class BaseActivity <VB : ViewBinding, VM : BaseViewModel> : AppCompatAc
         setContentView(binding.root)
 
         checkInternet()
-        setUI ()
+        setUI()
         setupLiveData()
-        initClick ()
+        initClick()
 
 
     }
 
     open fun initClick() {} // обработка кликов
 
-    protected fun setupLiveData() {} // инициализация LiveData
+    open fun setupLiveData() {} // инициализация LiveData
 
-    protected fun setUI() {} //
+    open fun setUI() {} //
 
-    protected fun checkInternet() {}
+    open fun checkInternet() {}
 
 }

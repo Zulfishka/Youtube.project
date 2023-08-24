@@ -1,39 +1,38 @@
 package com.example.youtubeproject.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.youtubeproject.BuildConfig
-import com.example.youtubeproject.core.network.RetrofitClient
+import androidx.lifecycle.liveData
+import com.example.youtubeproject.core.Resource
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.remote.ApiService
-import com.example.youtubeproject.utils.Constants.CHANNEL_ID
-import com.example.youtubeproject.utils.Constants.PART
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.youtubeproject.data.remote.RemoteDataSource
+import kotlinx.coroutines.Dispatchers
 
-class Repository {
+class Repository(private val apiService: ApiService, private val dataSource: RemoteDataSource) {
 
-    private val apiService: ApiService by lazy { RetrofitClient.create() }
-
-    fun getPlaylist(): LiveData<Playlist> {
-
-        val data = MutableLiveData<Playlist>()
-        apiService.getPlaylist(BuildConfig.API_KEY, PART, CHANNEL_ID).enqueue(
-            object : Callback<Playlist> {
-                override fun onResponse(call: Call<Playlist>, response: Response<Playlist>) {
-                    if (response.isSuccessful) {
-                        data.value = response.body()
-                    }
-                }
-
-                override fun onFailure(call: Call<Playlist>, t: Throwable) {
-                    Log.e("OLOLO", "onFailure: ${t.message}")
-                }
-
-            }
-        )
-        return data
+    fun getPlaylists(): LiveData<Resource<Playlist>> {
+        return liveData(Dispatchers.IO) {
+            emit(Resource.loading())
+            val response = dataSource.getPlaylist()
+            emit(response)
+        }
     }
+
+
+    fun getPlaylistItem(playlistItem: String): LiveData<Resource<Playlist>> {
+        return liveData(Dispatchers.IO) {
+            emit(Resource.loading())
+            val response = dataSource.getPlaylistItem(playlistItem)
+            emit(response)
+        }
+    }
+
+    fun getVideo(id: String): LiveData<Resource<Playlist>> {
+        return liveData(Dispatchers.IO) {
+            emit(Resource.loading())
+            val response = dataSource.getVideo(id)
+            emit(response)
+        }
+    }
+
 }
